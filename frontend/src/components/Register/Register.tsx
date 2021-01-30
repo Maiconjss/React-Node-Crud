@@ -72,10 +72,36 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
 
 
   const [name, setName] = useState("");
+  const [idade, setIdade] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [hobby, setHobby] = useState("");
+  const [nascimento, setNascimento] = useState("");
+  const [developers, setDevelopers] = useState<IDeveloper[]>();
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   const formatDate = (date: any): string =>{
     return  ( date.getDate() + '/' +date.getMonth() + 1)  + '/' + (date.getFullYear() );
   }

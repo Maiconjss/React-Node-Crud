@@ -1,7 +1,7 @@
 export default interface IDeveloper {
     name:string;
-    age: number;
-    genre: string;
+    idade: number;
+    sexo: string;
     hobby: string;
-    bornDate: number;
+    nascimento: Date;
 }
