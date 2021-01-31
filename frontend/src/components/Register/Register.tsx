@@ -1,166 +1,169 @@
-import React, { useState } from "react";
-import IDeveloper from "../../interfaces/IDeveloper";
-import {
-  TextField,
-  IDropdownOption,
-  Dropdown,
-  DatePicker,
-  IDatePickerStrings,
-  DefaultButton,
-} from "office-ui-fabric-react";
+import React, { useEffect, useState } from 'react';
+import IDeveloper from '../../interfaces/IDeveloper';
+import Axios from 'axios';
+import './Register.css';
 
-const optionsGenre: IDropdownOption[] = [
-  { key: "M", text: "M" },
-  { key: "F", text: "F" },
-  { key: "OUTROS", text: "OUTROS" },
-];
-
-const DayPickerStrings: IDatePickerStrings = {
-  months: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ],
-
-  shortMonths: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ],
-
-  days: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ],
-
-  shortDays: ["S", "M", "T", "W", "T", "F", "S"],
-
-  goToToday: "Go to today",
-  prevMonthAriaLabel: "Go to previous month",
-  nextMonthAriaLabel: "Go to next month",
-  prevYearAriaLabel: "Go to previous year",
-  nextYearAriaLabel: "Go to next year",
-
-  isRequiredErrorMessage: "Data de nascimento obrigatória *",
-  invalidInputErrorMessage: "Invalid date format.",
-};
-
-const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
-
-  const [name, setName] = useState("");
-  const [idade, setIdade] = useState("");
-  const [hobby, setHobby] = useState("");
+const Register: React.FC = () => {
+  const [name, setName] = useState('');
+  const [idade, setIdade] = useState('');
+  const [hobby, setHobby] = useState('');
   const [sexo, setSexo] = useState();
   const [nascimento, setNascimento] = useState<any>();
-  const [developers, setDevelopers] = useState<IDeveloper[]>();
+  const [developers, setDevelopers] = useState<IDeveloper[]>([]);
 
-  const onChangeName = React.useCallback(
-    (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => {
-      setName(newValue || "");
-    },
-    []
-  );
-
-  const onChangeIdade = React.useCallback(
-    (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => {
-      setIdade(newValue || "");
-    },
-    []
-  );
-
-  const onChangeHobby = React.useCallback(
-    (
-      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => {
-      setHobby(newValue || "");
-    },
-    []
-  );
-
-  const onChangeSexo = (event: React.FormEvent<HTMLDivElement>,item: any): void => {
-    setSexo(item.text);
+  const changeSexo = (sexoId: any) => {
+    setSexo(sexoId);
   };
 
-  const onFormatDate = (date?: Date): string => {
-    return !date ? '' : date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() % 100);
+  useEffect(() => {
+    Axios.get<IDeveloper[]>('http://localhost:3000/developers')
+      .then((response) => {
+        setDevelopers(response.data as IDeveloper[]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const addDeveloper = () => {
+    Axios.post('http://localhost:3000/developers', {
+      name: name,
+      sexo: sexo,
+      idade: idade,
+      hobby: hobby,
+      nascimento: nascimento,
+    })
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  const deleteDeveloper = (devId: number)=>{
+
+    Axios.delete<IDeveloper[]>('http://localhost:3000/developers/'  + devId)
+    .then((response) => {
+      console.log("deletado")
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+
+  const updateDeveloper = (devId: number)=>{
+
+    Axios.put<IDeveloper[]>('http://localhost:3000/developers/' + devId,{
+      name: name,
+      sexo: sexo,
+      idade: idade,
+      hobby: hobby,
+      nascimento: nascimento
+    })
+    .then((response) => {
+      console.log("deletado")
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
 
   return (
     <>
-
-      <TextField
-        label="Nome"
-        required
-        value={name}
-        onChange={onChangeName}
+      <input
+        id=""
+        name=""
+        type="text"
+        placeholder="nome"
+        onChange={(event) => setName(event.target.value)}
       />
-
-      <TextField
-        label="Idade"
+      <input
+        name=""
+        id=""
         type="number"
-        required
-        value={idade}
-        onChange={onChangeIdade}
-       />
-
-      <Dropdown
-        label="Sexo"
-        options={optionsGenre}
-        required
-        onChange={onChangeSexo}
+        placeholder="idade"
+        onChange={(event) => setIdade(event.target.value)}
+      />
+      <input
+        id="date"
+        type="date"
+        onChange={(event) => setNascimento(event.target.value)}
       />
 
-      <DatePicker
-        strings={DayPickerStrings}
-        value={nascimento}
-        isRequired
-        label="Data de nascimento"
-        formatDate={onFormatDate}
-        onSelectDate={ date => setNascimento(date) }
-      />
+      <select
+        id="sexo"
+        onChange={(event) => changeSexo(event.target.value)}
+        value={sexo}
+      >
+        <option value="0">Selecione o sexo</option>
+        <option value="M">M</option>
+        <option value="F">F</option>
+        <option value="OUTROS">OUTROS</option>
+      </select>
 
-      <TextField
-        label="Hobby"
-        value={hobby}
-        onChange={onChangeHobby}
+      <input
+        type="text"
+        name=""
+        id=""
+        onChange={(event) => setHobby(event.target.value)}
       />
+      <button onClick={addDeveloper}> Salvar </button>
 
-      <DefaultButton
-        text="Salvar"
-        onClick={()=> console.log(nascimento)}
-       />
+      <h1>Desenvolvedores cadastrados</h1>
+      <div>
+        {developers.map((dev) => {
+          return (
+            <div key={dev.id}>
+              <input
+                type="text"
+                placeholder="nome"
+                defaultValue={dev.name}
+                onChange={(event) => setName(event.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="idade"
+                defaultValue={dev.idade}
+                onChange={(event) => setIdade(event.target.value)}
+              />
+              <input
+                id="date"
+                type="date"
+                defaultValue={dev.nascimento}
+                onChange={(event) => setNascimento(event.target.value)}
+              />
+
+              <select
+                id="sexo"
+                onChange={(event) => changeSexo(event.target.value)}
+                defaultValue={dev.sexo}
+              >
+                <option value="0">Selecione o sexo</option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+                <option value="OUTROS">OUTROS</option>
+              </select>
+
+              <input
+                type="text"
+                defaultValue={dev.hobby}
+                onChange={(event) => setHobby(event.target.value)}
+              />
+                {console.log(name)}
+
+              <button onClick={()=> deleteDeveloper(dev.id)}> Apagar </button>
+              <button onClick={()=> updateDeveloper(dev.id)}> Atualizar </button>
+
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 };

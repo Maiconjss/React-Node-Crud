@@ -1,0 +1,5 @@
+input, select, button {
+  display: block;
+  margin: 50px;
+  width: 400px;
+}
