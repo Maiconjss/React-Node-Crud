@@ -28,11 +28,13 @@ const Register: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [developers]);
 
   React.useEffect(() => {
     const results = developers.filter(dev =>
-      dev.name.toLowerCase().includes(searchTerm)
+      dev.name.toLowerCase().includes(searchTerm),
+      developers.reverse()
+
     );
     setSearchResults(results);
   }, [developers, searchTerm]);
