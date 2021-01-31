@@ -74,7 +74,7 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
   const [idade, setIdade] = useState("");
   const [hobby, setHobby] = useState("");
   const [sexo, setSexo] = useState();
-  const [nascimento, setNascimento] = useState(null);
+  const [nascimento, setNascimento] = useState();
   const [developers, setDevelopers] = useState<IDeveloper[]>();
 
   const onChangeName = React.useCallback(
