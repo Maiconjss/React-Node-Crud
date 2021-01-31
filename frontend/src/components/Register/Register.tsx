@@ -44,7 +44,7 @@ const Register: React.FC = () => {
 
   const deleteDeveloper = (devId: number)=>{
 
-    Axios.delete<IDeveloper[]>('http://localhost:3000/developers/'  + devId)
+    Axios.delete<IDeveloper[]>('http://localhost:3000/developers/' + devId)
     .then((response) => {
       console.log("deletado")
       window.location.reload()
