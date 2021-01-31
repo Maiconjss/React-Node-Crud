@@ -74,7 +74,7 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
   const [idade, setIdade] = useState("");
   const [hobby, setHobby] = useState("");
   const [sexo, setSexo] = useState();
-  const [nascimento, setNascimento] = useState();
+  const [nascimento, setNascimento] = useState<any>();
   const [developers, setDevelopers] = useState<IDeveloper[]>();
 
   const onChangeName = React.useCallback(
@@ -148,6 +148,7 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
         isRequired
         label="Data de nascimento"
         formatDate={onFormatDate}
+        onSelectDate={ date => setNascimento(date) }
       />
 
       <TextField
@@ -158,9 +159,8 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
 
       <DefaultButton
         text="Salvar"
-        onClick={() => alert("hello!")}
+        onClick={()=> console.log(nascimento)}
        />
-
     </>
   );
 };
