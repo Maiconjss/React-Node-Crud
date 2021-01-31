@@ -30,7 +30,7 @@ const Register: React.FC = () => {
       });
   }, [developers]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const results = developers.filter(dev =>
       dev.name.toLowerCase().includes(searchTerm),
       developers.reverse()
@@ -176,7 +176,6 @@ const Register: React.FC = () => {
                 defaultValue={dev.hobby}
                 onChange={(event) => setHobby(event.target.value)}
               />
-                {console.log(name)}
 
               <button onClick={()=> deleteDeveloper(dev.id)}> Apagar </button>
               <button onClick={()=> updateDeveloper(dev.id)}> Atualizar </button>
