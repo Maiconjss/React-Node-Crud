@@ -9,10 +9,15 @@ const Register: React.FC = () => {
   const [hobby, setHobby] = useState('');
   const [sexo, setSexo] = useState();
   const [nascimento, setNascimento] = useState<any>();
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState<IDeveloper[]>([]);
   const [developers, setDevelopers] = useState<IDeveloper[]>([]);
 
   const changeSexo = (sexoId: any) => {
     setSexo(sexoId);
+  };
+  const devNameChange = (event:any) => {
+    setSearchTerm(event.target.value);
   };
 
   useEffect(() => {
@@ -24,6 +29,13 @@ const Register: React.FC = () => {
         console.log(error);
       });
   }, []);
+
+  React.useEffect(() => {
+    const results = developers.filter(dev =>
+      dev.name.toLowerCase().includes(searchTerm)
+    );
+    setSearchResults(results);
+  }, [developers, searchTerm]);
 
   const addDeveloper = () => {
     Axios.post('http://localhost:3000/developers', {
@@ -111,11 +123,20 @@ const Register: React.FC = () => {
         id=""
         onChange={(event) => setHobby(event.target.value)}
       />
+
       <button onClick={addDeveloper}> Salvar </button>
 
       <h1>Desenvolvedores cadastrados</h1>
+
+      <input
+        type="text"
+        placeholder="Search"
+        onChange={devNameChange}
+        value={searchTerm}
+      />
+
       <div>
-        {developers.map((dev) => {
+        {searchResults.map((dev) => {
           return (
             <div key={dev.id}>
               <input
