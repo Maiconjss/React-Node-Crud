@@ -7,7 +7,7 @@ import {
   DatePicker,
   IDatePickerStrings,
   DefaultButton,
-} from "@fluentui/react";
+} from "office-ui-fabric-react";
 
 const optionsGenre: IDropdownOption[] = [
   { key: "M", text: "M" },
@@ -64,7 +64,7 @@ const DayPickerStrings: IDatePickerStrings = {
   prevYearAriaLabel: "Go to previous year",
   nextYearAriaLabel: "Go to next year",
 
-  isRequiredErrorMessage: "Start date is required.",
+  isRequiredErrorMessage: "Data de nascimento obrigatória *",
   invalidInputErrorMessage: "Invalid date format.",
 };
 
@@ -93,7 +93,6 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
       newValue?: string
     ) => {
       setIdade(newValue || "");
-      console.log(newValue)
     },
     []
   );
@@ -108,38 +107,26 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
     []
   );
 
-  const onTypeChange = (event: React.FormEvent<HTMLDivElement>,item: any): void => {
+  const onChangeSexo = (event: React.FormEvent<HTMLDivElement>,item: any): void => {
     setSexo(item.text);
-    console.log(item.text);
+  };
+
+  const onFormatDate = (date?: Date): string => {
+    return !date ? '' : date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() % 100);
   };
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const formatDate = (date: any): string =>{
-    return  ( date.getDate() + '/' +date.getMonth() + 1)  + '/' + (date.getFullYear() );
-  }
-
   return (
     <>
+
       <TextField
         label="Nome"
         required
         value={name}
         onChange={onChangeName}
       />
+
       <TextField
         label="Idade"
         type="number"
@@ -147,28 +134,33 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
         value={idade}
         onChange={onChangeIdade}
        />
+
       <Dropdown
         label="Sexo"
         options={optionsGenre}
         required
-        onChange={onTypeChange}
+        onChange={onChangeSexo}
       />
+
+      <DatePicker
+        strings={DayPickerStrings}
+        value={nascimento}
+        isRequired
+        label="Data de nascimento"
+        formatDate={onFormatDate}
+      />
+
       <TextField
         label="Hobby"
         value={hobby}
         onChange={onChangeHobby}
       />
-      <DatePicker
-        strings={DayPickerStrings}
-        isRequired
-        label="Data de nascimento"
-        formatDate={formatDate}
 
-      />
       <DefaultButton
         text="Salvar"
         onClick={() => alert("hello!")}
        />
+
     </>
   );
 };
