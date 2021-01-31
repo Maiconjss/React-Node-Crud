@@ -1,4 +1,4 @@
-import React, { Props, useState } from "react";
+import React, { useState } from "react";
 import IDeveloper from "../../interfaces/IDeveloper";
 import {
   TextField,
@@ -10,9 +10,9 @@ import {
 } from "@fluentui/react";
 
 const optionsGenre: IDropdownOption[] = [
-  { key: 1, text: "M" },
-  { key: 2, text: "F" },
-  { key: 3, text: "OUTROs" },
+  { key: "M", text: "M" },
+  { key: "F", text: "F" },
+  { key: "OUTROS", text: "OUTROS" },
 ];
 
 const DayPickerStrings: IDatePickerStrings = {
@@ -70,14 +70,48 @@ const DayPickerStrings: IDatePickerStrings = {
 
 const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
 
-
   const [name, setName] = useState("");
   const [idade, setIdade] = useState("");
-  const [sexo, setSexo] = useState("");
   const [hobby, setHobby] = useState("");
-  const [nascimento, setNascimento] = useState("");
+  const [sexo, setSexo] = useState();
+  const [nascimento, setNascimento] = useState(null);
   const [developers, setDevelopers] = useState<IDeveloper[]>();
 
+  const onChangeName = React.useCallback(
+    (
+      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      newValue?: string
+    ) => {
+      setName(newValue || "");
+    },
+    []
+  );
+
+  const onChangeIdade = React.useCallback(
+    (
+      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      newValue?: string
+    ) => {
+      setIdade(newValue || "");
+      console.log(newValue)
+    },
+    []
+  );
+
+  const onChangeHobby = React.useCallback(
+    (
+      event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+      newValue?: string
+    ) => {
+      setHobby(newValue || "");
+    },
+    []
+  );
+
+  const onTypeChange = (event: React.FormEvent<HTMLDivElement>,item: any): void => {
+    setSexo(item.text);
+    console.log(item.text);
+  };
 
 
 
@@ -94,48 +128,45 @@ const Register: React.FC<IDeveloper> = (props: IDeveloper) => {
 
 
 
-
-
-
-
-
-
-
-  
   const formatDate = (date: any): string =>{
     return  ( date.getDate() + '/' +date.getMonth() + 1)  + '/' + (date.getFullYear() );
   }
 
   return (
     <>
-      <TextField 
-        label="Nome" 
+      <TextField
+        label="Nome"
         required
-
+        value={name}
+        onChange={onChangeName}
       />
-      <TextField 
+      <TextField
         label="Idade"
         type="number"
         required
-
+        value={idade}
+        onChange={onChangeIdade}
        />
       <Dropdown
         label="Sexo"
         options={optionsGenre}
         required
+        onChange={onTypeChange}
       />
-      <TextField 
-        label="Hobby" 
+      <TextField
+        label="Hobby"
+        value={hobby}
+        onChange={onChangeHobby}
       />
       <DatePicker
         strings={DayPickerStrings}
         isRequired
         label="Data de nascimento"
         formatDate={formatDate}
-        
+
       />
-      <DefaultButton 
-        text="Salvar" 
+      <DefaultButton
+        text="Salvar"
         onClick={() => alert("hello!")}
        />
     </>
