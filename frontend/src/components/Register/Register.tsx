@@ -54,7 +54,6 @@ const Register: React.FC = () => {
     });
   }
 
-
   const updateDeveloper = (devId: number)=>{
 
     Axios.put<IDeveloper[]>('http://localhost:3000/developers/' + devId,{
@@ -72,7 +71,6 @@ const Register: React.FC = () => {
       console.log(error);
     });
   }
-
 
   return (
     <>

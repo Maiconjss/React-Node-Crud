@@ -1,26 +1,24 @@
 const knex = require('knex')({
-    client: 'sqlite3',
+  client: 'sqlite3',
   connection: {
-    filename: "./db.sqlite"
+    filename: './db.sqlite',
   },
-  useNullAsDefault: true
-})
+  useNullAsDefault: true,
+});
 
 const initDB = async () => {
-    const desenvolvedores = await knex.schema.hasTable('desenvolvedores')
-    if (!desenvolvedores) {
-      await knex.schema.createTable('desenvolvedores', table => {
-        table.increments('id').primary()
-        table.string('name')
-        table.string('sexo')
-        table.integer('idade')
-        table.string('hobby')
-        table.date('nascimento')
-      })
-    }
-
-}
-
+  const desenvolvedores = await knex.schema.hasTable('desenvolvedores');
+  if (!desenvolvedores) {
+    await knex.schema.createTable('desenvolvedores', (table) => {
+      table.increments('id').primary();
+      table.string('name');
+      table.string('sexo');
+      table.integer('idade');
+      table.date('nascimento');
+      table.string('hobby');
+    });
+  }
+};
 
 initDB();
 module.exports = knex;
