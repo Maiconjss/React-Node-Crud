@@ -1,5 +1,73 @@
-input, select, button {
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
+
+body{
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #222;
+  color: #fff;
+}
+
+h1 {
+  text-align: center;
+}
+
+input, select {
   display: block;
-  margin: 50px;
+  border: none;
+  height: 35px;
+  margin-bottom: 30px;
+  margin-top: 10px;
   width: 400px;
+  border-radius: 10px;
+  padding-left: 10px;
+}
+
+button {
+  display: block;
+  border: none;
+  border-radius: 10px;
+  margin: 40px 0px;
+  width: 400px;
+  height: 35px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 1180px;
+  margin: 100px auto;
+}
+
+.required {
+  color: red;
+}
+
+.devInfo{
+  background-color: grey;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.btnSave {
+  background-color: green;
+  color: #fff;
+  cursor: pointer;
+  transition: 500ms;
+}
+
+.btnSave:hover {
+  background-color: rgb(4, 78, 4);
+  color: #fff;
+}
+
+.btnDelete {
+  background-color: rgb(211, 0, 0);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btnUpdate {
+  background-color: rgb(3, 1, 156);
+  color: #fff;
+  cursor: pointer;
 }
